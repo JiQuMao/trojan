@@ -96,6 +96,16 @@ Flags:
 ## 注意
 安装完trojan后强烈建议开启BBR等加速: [one_click_script](https://github.com/jinwyp/one_click_script)  
 
+
+## 修改web端口
+修改/etc/systemd/system/trojan-web.service 配置文件
+在/usr/local/bin/trojan web 后面添加 -p port
+然后运行:
+```
+systemctl daemon-reload
+systemctl restart trojan-web
+```
+
 ## Thanks
 感谢JetBrains提供的免费GoLand  
 [![avatar](asset/jetbrains.svg)](https://jb.gg/OpenSource)
