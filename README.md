@@ -106,6 +106,27 @@ systemctl daemon-reload
 systemctl restart trojan-web
 ```
 
+## Nginx配置
+假如想通过nginx来实现不同的请求路径转发进去trojan web管理后台, nginx使用80端口, trojan管理程序使用其他端口(参考修改端口)
+假定请求web后台的访问路径为/admin, 启动端口为81，这里提供基本的nginx proxy_pass例子仅供参考:
+```        
+        location /admin {
+            proxy_pass   http://localhost:81/;
+        }
+        location ~* ^/(static|common|auth|trojan)/ {
+            proxy_pass  http://localhost:81;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "Upgrade";
+            proxy_set_header Host $host;
+        }
+        # http强制跳转到https
+        if ( $remote_addr != 127.0.0.1 ){
+            rewrite ^/(.*)$ https://example.com/$1 redirect;
+        }  
+```
+
+
 ## Thanks
 感谢JetBrains提供的免费GoLand  
 [![avatar](asset/jetbrains.svg)](https://jb.gg/OpenSource)
